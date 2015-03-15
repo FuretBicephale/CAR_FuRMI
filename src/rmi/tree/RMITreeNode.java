@@ -10,17 +10,17 @@ import java.rmi.RemoteException;
 public interface RMITreeNode extends Remote {
 	
 	/**
-	 * Give data as an array of Byte to the RMITreeNode in order to propagate it to its children
-	 * @param data
+	 * Give data as Byte to the RMITreeNode in order to propagate to the leaves of the tree
+	 * @param data The data to propagate to the leaves of the tree
 	 * @throws RemoteException
 	 */
-	public void propagate(Byte[] data) throws RemoteException;
+	public void propagate(Byte data) throws RemoteException;
 	
 	/**
-	 * Send data as an array of Bytes to every children of the RMITreeNode.
-	 * @param data An array of Bytes containing the data to send to the children.
+	 * Send data as Byte to every children of the RMITreeNode.
+	 * @param data A Byte containing the data to send to the children.
 	 * @throws RemoteException
 	 */
-	public void sendDataToChildren(Byte[] data) throws RemoteException;
+	public void sendDataToChildren(Byte data) throws RemoteException;
 
 }

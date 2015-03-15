@@ -1,6 +1,7 @@
 package rmi.tree;
 
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,7 +9,7 @@ import java.util.List;
  * An implementation of the RMITreeNode interface. Has one father and an array of children.
  * @author cachera
  */
-public class RMITreeNodeImpl implements RMITreeNode {
+public class RMITreeNodeImpl extends UnicastRemoteObject implements RMITreeNode {
 	
 	private RMITreeNodeImpl father;
 	private List<RMITreeNodeImpl> children;
@@ -66,7 +67,7 @@ public class RMITreeNodeImpl implements RMITreeNode {
 	 * @see rmi.tree.RMITreeNode#receiveDataFromFather()
 	 */
 	@Override
-	public void propagate(Byte[] data) throws RemoteException {
+	public void propagate(Byte data) throws RemoteException {
 		sendDataToChildren(data);
 	}
 
@@ -74,7 +75,13 @@ public class RMITreeNodeImpl implements RMITreeNode {
 	 * @see rmi.tree.RMITreeNode#sendDataToChildren(java.lang.Byte[])
 	 */
 	@Override
-	public void sendDataToChildren(Byte[] data) throws RemoteException {
+	public void sendDataToChildren(Byte data) throws RemoteException {
+		
+		if(children.size() == 0) {
+			System.out.println(data);
+			return;
+		}
+		
 		for(int i = 0; i < children.size(); i++) {
 			children.get(i).propagate(data);
 		}
