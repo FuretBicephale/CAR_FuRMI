@@ -3,6 +3,7 @@ package rmi.server;
 import java.net.MalformedURLException;
 import java.rmi.AlreadyBoundException;
 import java.rmi.Naming;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
 import rmi.tree.RMITreeNode;
@@ -14,10 +15,19 @@ import rmi.tree.RMITreeNodeImpl;
  */
 public class RMITreeNodeServer {
 
-	public static void main(String[] args) throws MalformedURLException, RemoteException, AlreadyBoundException {
+	public static void main(String[] args) throws MalformedURLException, RemoteException, AlreadyBoundException, NotBoundException {
 		
-		RMITreeNode node = new RMITreeNodeImpl(null);
-		Naming.bind("root", node);
+		RMITreeNode node;
+		
+		if(args[1].equals("-r")) {
+			node = new RMITreeNodeImpl(null);
+		} else {
+			RMITreeNode father = (RMITreeNode)Naming.lookup(args[1]);
+			node = new RMITreeNodeImpl(father);
+			father.addChild(node);
+		}
+		
+		Naming.rebind(args[0], node);
 		
 	}
 	

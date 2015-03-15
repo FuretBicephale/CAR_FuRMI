@@ -11,17 +11,17 @@ import java.util.List;
  */
 public class RMITreeNodeImpl extends UnicastRemoteObject implements RMITreeNode {
 	
-	private RMITreeNodeImpl father;
-	private List<RMITreeNodeImpl> children;
+	private RMITreeNode father;
+	private List<RMITreeNode> children;
 	
 	/**
 	 * Initialize a RMITreeNodeImpl with the father father and no child. If the RMITreeNodeImpl is a root, father can be set to null.
 	 * @param father The father of the RMITreeNodeImpl. If it's null, the RMITreeNodeImpl is a root.
 	 * @throws RemoteException
 	 */
-	public RMITreeNodeImpl(RMITreeNodeImpl father) throws RemoteException {
+	public RMITreeNodeImpl(RMITreeNode father) throws RemoteException {
 		this.father = father;
-		this.children = new ArrayList<RMITreeNodeImpl>();
+		this.children = new ArrayList<RMITreeNode>();
 	}
 	
 	/**
@@ -31,59 +31,58 @@ public class RMITreeNodeImpl extends UnicastRemoteObject implements RMITreeNode 
 	public void setFather(RMITreeNodeImpl father) {
 		this.father = father;
 	}
-	
-	public void addChild(RMITreeNodeImpl child) {
+
+	@Override
+	public void addChild(RMITreeNode child) {
 		this.children.add(child);
 	}
-	
+
+	@Override
 	public void removeChild(int index) {
 		this.children.remove(index);
 	}
-	
-	public void removeChild(RMITreeNodeImpl child) {
+
+	@Override
+	public void removeChild(RMITreeNode child) {
 		this.children.remove(child);
 	}
 	
-	/**
-	 * Remove every child of the RMITreeNode so it becomes a leaf.
-	 */
+	@Override
 	public void clearChildren() {
 		this.children.clear();
 	}
 	
-	public RMITreeNodeImpl getFather() {
+	public RMITreeNode getFather() {
 		return this.father;
 	}
-	
-	public List<RMITreeNodeImpl> getChildren() {
+
+	@Override
+	public List<RMITreeNode> getChildren() {
 		return this.children;
 	}
-	
-	public RMITreeNodeImpl getChild(int index) {
+
+	@Override
+	public RMITreeNode getChild(int index) {
 		return this.children.get(index);
 	}
 
-	/* (non-Javadoc)
-	 * @see rmi.tree.RMITreeNode#receiveDataFromFather()
-	 */
 	@Override
-	public void propagate(Byte data) throws RemoteException {
+	public void propagate(byte[] data) throws RemoteException {
+		System.out.println("Propagate...");
 		sendDataToChildren(data);
 	}
 
-	/* (non-Javadoc)
-	 * @see rmi.tree.RMITreeNode#sendDataToChildren(java.lang.Byte[])
-	 */
 	@Override
-	public void sendDataToChildren(Byte data) throws RemoteException {
+	public void sendDataToChildren(byte[] data) throws RemoteException {
 		
-		if(children.size() == 0) {
+		if(this.children.size() == 0) {
 			System.out.println(data);
 			return;
 		}
 		
-		for(int i = 0; i < children.size(); i++) {
-			children.get(i).propagate(data);
+		for(int i = 0; i < this.children.size(); i++) {
+			System.out.println("Send to child " + i + "...");
+			this.children.get(i).propagate(data);
 		}
 	}
 
