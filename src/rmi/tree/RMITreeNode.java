@@ -25,18 +25,29 @@ public interface RMITreeNode extends Remote {
 	
 	public RMITreeNode getChild(int index) throws RemoteException;
 	
+	public String getName() throws RemoteException;
+	
 	/**
-	 * Give data as an array of byte to the RMITreeNode in order to propagate to the leaves of the tree
-	 * @param data The data to propagate to the leaves of the tree
+	 * Return a String containing the trace of the propogation since its beginning.
+	 * @return The trace of the propogation.
 	 * @throws RemoteException
 	 */
-	public void propagate(byte[] data) throws RemoteException;
+	public String getTrace() throws RemoteException;
+	
+	/**
+	 * Give data as an array of byte to the RMITreeNode in order to propagate to the leaves of the tree.
+	 * @param data The data to propagate to the leaves of the tree.
+	 * @return The trace of the entire propagation.
+	 * @throws RemoteException
+	 */
+	public String propagate(byte[] data) throws RemoteException;
 	
 	/**
 	 * Send data as an array of byte to every children of the RMITreeNode.
 	 * @param data An array of byte containing the data to send to the children.
+	 * @return The trace of the children receiving the data.
 	 * @throws RemoteException
 	 */
-	public void sendDataToChildren(byte[] data) throws RemoteException;
+	public String sendDataToChildren(byte[] data) throws RemoteException;
 
 }

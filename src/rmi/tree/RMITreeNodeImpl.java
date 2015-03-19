@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * An implementation of the RMITreeNode interface. Has one father and an array of children.
+ * An implementation of the RMITreeNode interface. Has one father, an array of children, a trace of the propogation and a name to make it easier to understand.
  * @author cachera
  */
 public class RMITreeNodeImpl extends UnicastRemoteObject implements RMITreeNode {
@@ -15,11 +15,24 @@ public class RMITreeNodeImpl extends UnicastRemoteObject implements RMITreeNode 
 	private List<RMITreeNode> children;
 	
 	/**
+	 * Only used for the trace. Make it easier to understand.
+	 */
+	private String name;
+	
+	/**
+	 * Contains the entire trace since the beginning of the propogation.
+	 */
+	private String trace;
+	
+	/**
 	 * Initialize a RMITreeNodeImpl with the father father and no child. If the RMITreeNodeImpl is a root, father can be set to null.
+	 * @param name A name to make the trace easier to understand
 	 * @param father The father of the RMITreeNodeImpl. If it's null, the RMITreeNodeImpl is a root.
 	 * @throws RemoteException
 	 */
-	public RMITreeNodeImpl(RMITreeNode father) throws RemoteException {
+	public RMITreeNodeImpl(String name, RMITreeNode father) throws RemoteException {
+		this.name = name;
+		this.trace = "";
 		this.father = father;
 		this.children = new ArrayList<RMITreeNode>();
 	}
@@ -65,25 +78,54 @@ public class RMITreeNodeImpl extends UnicastRemoteObject implements RMITreeNode 
 	public RMITreeNode getChild(int index) {
 		return this.children.get(index);
 	}
-
+	
 	@Override
-	public void propagate(byte[] data) throws RemoteException {
-		System.out.println("Propagate...");
-		sendDataToChildren(data);
+	public String getName() {
+		return this.name;
+	}
+	
+	@Override
+	public String getTrace() {
+		return this.trace;
 	}
 
 	@Override
-	public void sendDataToChildren(byte[] data) throws RemoteException {
+	public String propagate(byte[] data) throws RemoteException {
+		this.trace = name + " is propagating...\n";
+		trace += sendDataToChildren(data);
+		return trace;
+	}
+
+	@Override
+	public String sendDataToChildren(byte[] data) throws RemoteException {
+		
+		this.trace = "";
 		
 		if(this.children.size() == 0) {
-			System.out.println(data);
-			return;
+			this.trace = "Data = " + new String(data) + "\n";
+			return trace;
 		}
 		
 		for(int i = 0; i < this.children.size(); i++) {
-			System.out.println("Send to child " + i + "...");
-			this.children.get(i).propagate(data);
+			final int finalIndice = i;
+			final byte[] finalData = data;
+			
+			Thread thread = new Thread() {				
+				public void run() {
+					try {
+						trace += "Sending to child " + children.get(finalIndice).getName() + "\n";
+						trace += children.get(finalIndice).propagate(finalData);
+					} catch (RemoteException e) {
+						System.out.println("Remote exception when sending data to child " + finalIndice + " of " + name);
+					}						
+				}	
+				
+			};
+					
+			thread.run();
 		}
+		
+		return trace;
 	}
 
 }

@@ -15,9 +15,14 @@ public class RMITreeNodeClient {
 
 	public static void main(String[] args) throws MalformedURLException, RemoteException, NotBoundException {
 		
-		RMITreeNode node = (RMITreeNode)Naming.lookup("root");
-		node.propagate("42".getBytes());
+		RMITreeNode node;
+		String trace;
 		
+		node = (RMITreeNode)Naming.lookup("root");
+		trace = node.propagate("42".getBytes());
+		
+		System.out.println(trace);
+	
 	}
 	
 }

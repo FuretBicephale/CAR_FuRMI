@@ -19,11 +19,11 @@ public class RMITreeNodeServer {
 		
 		RMITreeNode node;
 		
-		if(args[1].equals("-r")) {
-			node = new RMITreeNodeImpl(null);
+		if(args.length == 1) {
+			node = new RMITreeNodeImpl(args[0], null);
 		} else {
 			RMITreeNode father = (RMITreeNode)Naming.lookup(args[1]);
-			node = new RMITreeNodeImpl(father);
+			node = new RMITreeNodeImpl(args[0], father);
 			father.addChild(node);
 		}
 		
