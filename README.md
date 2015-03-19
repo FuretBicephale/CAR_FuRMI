@@ -21,10 +21,11 @@ Les package rmi.graph et rmi.server contiennent les classes permettant de défin
 Try/catch :
 * Catch(RemoteException) dans RMITreeNodeImpl.sendDataToChildren() qui se déclenche si l'objet RMI essai d'envoyer la donnée vers un fils qui n'exsiste pas. Ce Catch est necessaire du fait qu'il se situe dans la méthode run() d'un Thread qui ne peut donc pas utiliser Throw.
 
-'''
+```
 try { ... } catch (RemoteException e) {
 	System.out.println("Remote exception when sending data to child " + finalIndice + " of " + name);
-}'''
+}
+```
 
 
 Throw :
