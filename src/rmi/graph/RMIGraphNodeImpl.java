@@ -2,6 +2,7 @@ package rmi.graph;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
 import java.util.List;
 
 public class RMIGraphNodeImpl extends UnicastRemoteObject implements RMIGraphNode{
@@ -10,15 +11,24 @@ public class RMIGraphNodeImpl extends UnicastRemoteObject implements RMIGraphNod
 	private String name;
 	private String trace;
 
-	protected RMIGraphNodeImpl(String name, List<RMIGraphNode> neighbors) throws RemoteException {
+	public RMIGraphNodeImpl(String name, List<RMIGraphNode> neighbors) throws RemoteException {
 		this.name = name;
 		this.trace = "";
-		this.neighbors = neighbors;
+		if(neighbors != null) {
+			this.neighbors = neighbors;			
+		} else {
+			this.neighbors = new ArrayList<RMIGraphNode>();
+		}
 	}
 
 	@Override
 	public void addNeighbor(RMIGraphNode neighbor) throws RemoteException {
 		this.neighbors.add(neighbor);
+	}
+	
+	@Override
+	public void addNeighbors(List<RMIGraphNode> neighbors) throws RemoteException {
+		this.neighbors.addAll(neighbors);
 	}
 
 	@Override
