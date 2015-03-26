@@ -4,6 +4,7 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.List;
 import rmi.graph.RMIGraphNode;
 
@@ -11,7 +12,7 @@ public class RMIGraphNodeClient {
 
 	public static void main(String[] args) throws RemoteException, MalformedURLException, NotBoundException {
 		RMIGraphNode node;
-		List<RMIGraphNode> path = null;
+		List<RMIGraphNode> path = new ArrayList<RMIGraphNode>();
 		String trace;
 		
 		node = (RMIGraphNode)Naming.lookup(args [0]);

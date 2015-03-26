@@ -76,12 +76,10 @@ public class RMIGraphNodeImpl extends UnicastRemoteObject implements RMIGraphNod
 
 	@Override
 	public String sendDataToNeighbors(byte[] data, final List<RMIGraphNode> path) throws RemoteException {
-		this.trace = "";
 
-		if(this.neighbors.size() == 0) {
-			this.trace = "Data = " + new String(data) + "\n";
-			return trace;
-		}
+		boolean stop = true;
+		
+		this.trace = "";
 
 		for(int i = 0; i < this.neighbors.size(); i++) {
 			final int finalIndice = i;
@@ -89,12 +87,14 @@ public class RMIGraphNodeImpl extends UnicastRemoteObject implements RMIGraphNod
 
 			if(path.contains(this.neighbors.get(i))) {
 				continue;
+			} else {
+				stop = false;
 			}
 			
 			Thread thread = new Thread() {				
 				public void run() {
 					try {
-						trace += "Sending to child " + neighbors.get(finalIndice).getName() + "\n";
+						trace += name + " sending to child " + neighbors.get(finalIndice).getName() + "\n";
 						trace += neighbors.get(finalIndice).propagate(finalData, path);
 					} catch (RemoteException e) {
 						System.out.println("Remote exception when sending data to neighbor " + finalIndice + " of " + name);
@@ -104,6 +104,11 @@ public class RMIGraphNodeImpl extends UnicastRemoteObject implements RMIGraphNod
 			};
 
 			thread.run();
+		}
+		
+		if(stop) {
+			this.trace = "Data = " + new String(data) + "\n";
+			return trace;
 		}
 
 		return trace;

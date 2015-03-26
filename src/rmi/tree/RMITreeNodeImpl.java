@@ -113,7 +113,7 @@ public class RMITreeNodeImpl extends UnicastRemoteObject implements RMITreeNode 
 			Thread thread = new Thread() {				
 				public void run() {
 					try {
-						trace += "Sending to child " + children.get(finalIndice).getName() + "\n";
+						trace += name + "Sending to child " + children.get(finalIndice).getName() + "\n";
 						trace += children.get(finalIndice).propagate(finalData);
 					} catch (RemoteException e) {
 						System.out.println("Remote exception when sending data to child " + finalIndice + " of " + name);
