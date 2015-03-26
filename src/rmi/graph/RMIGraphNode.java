@@ -22,7 +22,7 @@ public interface RMIGraphNode extends Remote {
 	
 	public String getTrace() throws RemoteException;
 	
-	public String propagate(byte[] data) throws RemoteException;
+	public String propagate(byte[] data, List<RMIGraphNode> path) throws RemoteException;
 	
-	public String sendDataToNeighbors(byte[] data) throws RemoteException;
+	public String sendDataToNeighbors(byte[] data, final List<RMIGraphNode> path) throws RemoteException;
 }
