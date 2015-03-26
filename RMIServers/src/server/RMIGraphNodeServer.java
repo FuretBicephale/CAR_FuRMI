@@ -15,7 +15,7 @@ import java.rmi.RemoteException;
  */
 public class RMIGraphNodeServer {
 
-	public static void main(String[] args) throws MalformedURLException, RemoteException, AlreadyBoundException, NotBoundException {
+	public static void main(String[] args) throws MalformedURLException, RemoteException, NotBoundException {
 
 		RMIGraphNode node;
 

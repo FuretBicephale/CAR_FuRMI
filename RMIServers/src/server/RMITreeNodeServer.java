@@ -15,7 +15,7 @@ import tree.RMITreeNodeImpl;
  */
 public class RMITreeNodeServer {
 
-	public static void main(String[] args) throws MalformedURLException, RemoteException, AlreadyBoundException, NotBoundException {
+	public static void main(String[] args) throws MalformedURLException, RemoteException, NotBoundException {
 		
 		RMITreeNode node;
 		
