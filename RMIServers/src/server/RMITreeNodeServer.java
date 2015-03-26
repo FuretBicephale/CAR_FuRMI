@@ -11,7 +11,7 @@ import tree.RMITreeNodeImpl;
 
 /**
  * A server which creates a remotable tree node object which receives data from its father and sends it to its children.
- * @author cachera
+ * @author cachera brabant
  */
 public class RMITreeNodeServer {
 

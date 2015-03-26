@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * An implementation of the RMITreeNode interface. Has one father, an array of children, a trace of the propogation and a name to make it easier to understand.
- * @author cachera
+ * @author cachera brabant
  */
 public class RMITreeNodeImpl extends UnicastRemoteObject implements RMITreeNode {
 	

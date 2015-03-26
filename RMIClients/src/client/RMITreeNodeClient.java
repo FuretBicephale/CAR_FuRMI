@@ -9,7 +9,7 @@ import tree.RMITreeNode;
 
 /**
  * A client which send data to the root of a tree or the node of your choice (if specified) of remotable objects which will be propagate to its leaves 
- * @author cachera
+ * @author cachera brabant
  */
 public class RMITreeNodeClient {
 

@@ -6,7 +6,7 @@ import java.util.List;
 
 /**
  * An interface of a remotable object which is able to receive data from its father(s) and send it to its child(ren).
- * @author cachera
+ * @author cachera brabant
  */
 public interface RMITreeNode extends Remote {
 
