@@ -37,55 +37,53 @@ public class RMITreeNodeImpl extends UnicastRemoteObject implements RMITreeNode 
 		this.children = new ArrayList<RMITreeNode>();
 	}
 	
-	/**
-	 * Set the father of the RMITreeNodeImpl. If it's set to null, the RMITreeNodeImpl becomes a root.
-	 * @param father The father of the RMITreeNodeImpl. If it's null, the RMITreeNodeImpl is a root.
-	 */
-	public void setFather(RMITreeNodeImpl father) {
+	@Override
+	public void setFather(RMITreeNodeImpl father) throws RemoteException {
 		this.father = father;
 	}
 
 	@Override
-	public void addChild(RMITreeNode child) {
+	public void addChild(RMITreeNode child) throws RemoteException {
 		this.children.add(child);
 	}
 
 	@Override
-	public void removeChild(int index) {
+	public void removeChild(int index) throws RemoteException {
 		this.children.remove(index);
 	}
 
 	@Override
-	public void removeChild(RMITreeNode child) {
+	public void removeChild(RMITreeNode child) throws RemoteException {
 		this.children.remove(child);
 	}
 	
 	@Override
-	public void clearChildren() {
+	public void clearChildren() throws RemoteException {
 		this.children.clear();
 	}
 	
-	public RMITreeNode getFather() {
+	@Override
+	public RMITreeNode getFather() throws RemoteException {
 		return this.father;
 	}
 
 	@Override
-	public List<RMITreeNode> getChildren() {
+	public List<RMITreeNode> getChildren() throws RemoteException {
 		return this.children;
 	}
 
 	@Override
-	public RMITreeNode getChild(int index) {
+	public RMITreeNode getChild(int index) throws RemoteException {
 		return this.children.get(index);
 	}
 	
 	@Override
-	public String getName() {
+	public String getName() throws RemoteException {
 		return this.name;
 	}
 	
 	@Override
-	public String getTrace() {
+	public String getTrace() throws RemoteException {
 		return this.trace;
 	}
 

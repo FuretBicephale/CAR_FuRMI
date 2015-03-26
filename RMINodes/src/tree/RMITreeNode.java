@@ -10,6 +10,12 @@ import java.util.List;
  */
 public interface RMITreeNode extends Remote {
 
+	/**
+	 * Set the father of the RMITreeNodeImpl. If it's set to null, the RMITreeNodeImpl becomes a root.
+	 * @param father The father of the RMITreeNodeImpl. If it's null, the RMITreeNodeImpl is a root.
+	 */
+	public void setFather(RMITreeNodeImpl father) throws RemoteException;
+	
 	public void addChild(RMITreeNode child) throws RemoteException;
 	
 	public void removeChild(int index) throws RemoteException;
@@ -20,6 +26,8 @@ public interface RMITreeNode extends Remote {
 	 * Remove every child of the RMITreeNode so it becomes a leaf.
 	 */
 	public void clearChildren() throws RemoteException;
+	
+	public RMITreeNode getFather() throws RemoteException;
 	
 	public List<RMITreeNode> getChildren() throws RemoteException;
 	
