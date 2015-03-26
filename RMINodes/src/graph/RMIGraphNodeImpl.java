@@ -5,12 +5,30 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * An implementation of the RMIGraphNode interface. Has a list of neighbors, a trace of the propogation and a name to make it easier to understand.
+ * @author cachera brabant
+ */
 public class RMIGraphNodeImpl extends UnicastRemoteObject implements RMIGraphNode{
 
 	private List<RMIGraphNode> neighbors;
+	
+	/**
+	 * Only used for the trace. Make it easier to understand.
+	 */
 	private String name;
+	
+	/**
+	 * Contains the entire trace since the beginning of the propogation.
+	 */
 	private String trace;
 
+	/**
+	 * Initialize a RMIGraphNodeImpl with his neighbors. RMIGraphNodeImpl can be set to null.
+	 * @param name A name to make the trace easier to understand
+	 * @param neighbors The neighbors of the RMIGraphNodeImpl. If it's null, the RMIGraphNode doesn't have neighbors.
+	 * @throws RemoteException
+	 */
 	public RMIGraphNodeImpl(String name, List<RMIGraphNode> neighbors) throws RemoteException {
 		this.name = name;
 		this.trace = "";

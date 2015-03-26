@@ -8,6 +8,11 @@ import java.rmi.AlreadyBoundException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+
+/**
+ * A server which creates a remotable graph node object which receives data from its neighbors and sends it to its neighbors.
+ * @author cachera brabant
+ */
 public class RMIGraphNodeServer {
 
 	public static void main(String[] args) throws MalformedURLException, RemoteException, AlreadyBoundException, NotBoundException {
