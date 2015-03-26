@@ -7,6 +7,8 @@ import java.util.List;
 public interface RMIGraphNode extends Remote {
 
 	public void addNeighbor(RMIGraphNode neighbor) throws RemoteException;
+	
+	public void addNeighbors(List<RMIGraphNode> neighbors) throws RemoteException;
 
 	public void removeNeighbor(int index) throws RemoteException;
 
