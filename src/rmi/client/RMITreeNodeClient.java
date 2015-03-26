@@ -18,7 +18,12 @@ public class RMITreeNodeClient {
 		RMITreeNode node;
 		String trace;
 		
-		node = (RMITreeNode)Naming.lookup("root");
+		if(args.length == 1) {
+			node = (RMITreeNode)Naming.lookup(args[0]);
+			
+		} else {
+			node = (RMITreeNode)Naming.lookup("root");			
+		}
 		trace = node.propagate("42".getBytes());
 		
 		System.out.println(trace);
