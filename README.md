@@ -8,15 +8,15 @@ Cette application est une application permettant de transferer des données entr
 
 #### Architecture
 
-Cette application comprends trois projets java différents. Ces projets correspondent chacun à une facette de notre application. 
+Cette application comprends quatres packages différents
 
-Les projets RMIClients, composé du package client, et RMIServers, composé du package server, contiennent chacun une classe, contenant un main, pour chaque type d'organisation d'objet (arbre et graphe).
+Les packages rmi.client et rmi.server, contiennent chacun une classe, contenant un main, pour chaque type d'organisation d'objet (arbre et graphe).
 
-Les mains du projet RMIClient agissent comme des clients qui envoient une donnée dans un des objets RMI puis affichent la trace complete de la propagation résultante de cet envoi.
+Les mains du package rmi.client agissent comme des clients qui envoient une donnée dans un des objets RMI puis affichent la trace complete de la propagation résultante de cet envoi.
 
-Les mains du projet RMIServer agissent comme des serveurs et vont créer un objet RMI, soit un noeud, et le lier à un identifiant qui est le nom du noeud afin qu'il puisse être récupéré par une autre machine virtuelle. Ces mains s'occuperont aussi de lier les noeuds en fonction de leurs liens de parenté pour les arbres, voisinages pour les graphes.
+Les mains du package rmi.server agissent comme des serveurs et vont créer un objet RMI, soit un noeud, et le lier à un identifiant qui est le nom du noeud afin qu'il puisse être récupéré par une autre machine virtuelle. Ces mains s'occuperont aussi de lier les noeuds en fonction de leurs liens de parenté pour les arbres, voisinages pour les graphes.
 
-Le projet RMINodes contient 2 packages : les packages graph et tree. Ils contiennent les classes permettant de définir le comportement d'un objet RMI considéré comme un noeud d'un graphe (graph) ou d'un arbre (tree).
+Les packages graph et tree contiennent les classes permettant de définir le comportement d'un objet RMI considéré comme un noeud d'un graphe (graph) ou d'un arbre (tree).
 
 Try/catch :
 * Catch(RemoteException) dans RMITreeNodeImpl.sendDataToChildren() et RMIGraphNodeImpl.sendDataToChildren() qui se déclenche si l'objet RMI essai d'envoyer la donnée vers un fils qui n'exsiste pas. Ce Catch est necessaire du fait qu'il se situe dans la méthode run() d'un Thread qui ne peut donc pas utiliser Throw.
@@ -35,3 +35,14 @@ Throw :
 #### Code Samples
 
 #### Utilisation
+
+Script pour générer une structure d'arbre : createTree.sh.
+Script pour générer une structure de graphe : createGraph.sh.
+
+Ces deux scripts sont nécessaire pour que l'application fonctionne, ainsi que les tests. Si ils ne sont pas lancés, il n'y aura pas d'objets RMI existants.
+
+Client pour les arbres : RMITreeNodeClient (rootName)
+Par défaut, propage une donnée à partir de la racine de l'arbre, si précisé, propage une donnée à partir du noeud rootName.
+
+Client pour les graphes : RMIGraphNodeClient rootName
+Propage une donnée dans le graphe à partir du noeud rootName.

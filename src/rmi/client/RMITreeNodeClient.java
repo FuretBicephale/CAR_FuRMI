@@ -18,6 +18,11 @@ public class RMITreeNodeClient {
 		RMITreeNode node;
 		String trace;
 		
+		if(args.length > 1) {
+			System.err.println("Usage error : RMITreeNodeServer (rootName)");
+			System.exit(1);
+		}
+		
 		if(args.length == 1) {
 			node = (RMITreeNode)Naming.lookup(args[0]);
 		} else {

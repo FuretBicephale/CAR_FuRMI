@@ -20,6 +20,11 @@ public class RMIGraphNodeClient {
 		List<RMIGraphNode> path = new ArrayList<RMIGraphNode>();
 		String trace;
 		
+		if(args.length != 1) {
+			System.err.println("Usage error : RMITreeNodeServer rootName");
+			System.exit(1);
+		}
+		
 		node = (RMIGraphNode)Naming.lookup(args [0]);
 		trace = node.propagate("42".getBytes(), path);
 		
