@@ -1,11 +1,35 @@
+#!/bin/sh
+
+cd bin
+rmiregistry &
+sleep 0.1
+
+rmiregistry_pid="$!"
+
+cd ..
+
 # Root
-java rmi/server/RMITreeNodeServer root &
+xterm -e "java -classpath bin rmi.server.RMITreeNodeServer root" &
+sleep 0.1
 
 # 1er etage
-java rmi/server/RMITreeNodeServer node1 root &
-java rmi/server/RMITreeNodeServer node2 root &
+xterm -e "java -classpath bin rmi.server.RMITreeNodeServer node1 root" &
+sleep 0.1
+
+xterm -e "java -classpath bin rmi.server.RMITreeNodeServer node2 root" &
+sleep 0.1
 
 # 2eme etage
-java rmi/server/RMITreeNodeServer leaf1 node1 &
-java rmi/server/RMITreeNodeServer leaf2 node1 &
-java rmi/server/RMITreeNodeServer leaf3 node2 &
+xterm -e "java -classpath bin rmi.server.RMITreeNodeServer leaf1 node1" & 
+sleep 0.1
+
+xterm -e "java -classpath bin rmi.server.RMITreeNodeServer leaf2 node1" &
+sleep 0.1
+
+xterm -e "java -classpath bin rmi.server.RMITreeNodeServer leaf3 node2" &
+sleep 0.1
+
+echo -n "Press any key to continue... "
+read var_end
+
+kill $rmiregistry_pid
