@@ -19,7 +19,7 @@ Les mains du package rmi.server agissent comme des serveurs et vont créer un ob
 Les packages graph et tree contiennent les classes permettant de définir le comportement d'un objet RMI considéré comme un noeud d'un graphe (graph) ou d'un arbre (tree).
 
 Try/catch :
-* Catch(RemoteException) dans RMITreeNodeImpl.sendDataToChildren() et RMIGraphNodeImpl.sendDataToChildren() qui se déclenche si l'objet RMI essai d'envoyer la donnée vers un fils qui n'exsiste pas. Ce Catch est necessaire du fait qu'il se situe dans la méthode run() d'un Thread qui ne peut donc pas utiliser Throw.
+* Catch(RemoteException) dans RMITreeNodeImpl.sendDataToChildren() et RMIGraphNodeImpl.sendDataToChildren() qui se déclenche si l'objet RMI essai d'envoyer la donnée vers un fils qui n'existe pas. Ce Catch est necessaire du fait qu'il se situe dans la méthode run() d'un Thread qui ne peut donc pas utiliser Throw.
 
 ```
 try { ... } catch (RemoteException e) {
@@ -29,14 +29,15 @@ try { ... } catch (RemoteException e) {
 
 
 Throw :
-* - RemoteException pour toutes les fonctions de RMITreeNode et RMIGraphNode et les constructeurs de RMITreeNodeImpl et RMIGraphNodeImpl. Ces Throw sont necessaires pour que ces objets soient RMI.
-* - MalformedURLException, RemoteException, NotBoundException pour les mains des classes des packages server et client. MalformedURLException est lancée lorsque le nom fourni dans rebind ou lookup n'est pas dans le bon format, RemoteException est l'exception lancée par les objets RMI, et NotBoundException est lancée si lookup essaie d'acceder à un objet inexistant.
+* RemoteException pour toutes les fonctions de RMITreeNode et RMIGraphNode et les constructeurs de RMITreeNodeImpl et RMIGraphNodeImpl. Ces Throw sont necessaires pour que ces objets soient RMI.
+* MalformedURLException, RemoteException, NotBoundException pour les mains des classes des packages server et client. MalformedURLException est lancée lorsque le nom fourni dans rebind ou lookup n'est pas dans le bon format, RemoteException est l'exception lancée par les objets RMI, et NotBoundException est lancée si lookup essaie d'acceder à un objet inexistant.
 
 #### Code Samples
 
 #### Utilisation
 
 Script pour générer une structure d'arbre : createTree.sh.
+
 Script pour générer une structure de graphe : createGraph.sh.
 
 Ces deux scripts sont nécessaire pour que l'application fonctionne, ainsi que les tests. Si ils ne sont pas lancés, il n'y aura pas d'objets RMI existants.
