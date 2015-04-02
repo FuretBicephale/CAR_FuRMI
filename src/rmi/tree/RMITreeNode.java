@@ -52,6 +52,7 @@ public interface RMITreeNode extends Remote {
 	
 	/**
 	 * Send data as an array of byte to every children of the RMITreeNode.
+	 * If the node is a leaf, put the message in the trace.
 	 * @param data An array of byte containing the data to send to the children.
 	 * @return The trace of the children receiving the data.
 	 * @throws RemoteException

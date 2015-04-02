@@ -86,10 +86,15 @@ public class RMIGraphNodeImpl extends UnicastRemoteObject implements RMIGraphNod
 	
 	@Override
 	public String propagate(byte[] data, List<RMIGraphNode> path) throws RemoteException {
-		this.trace = name + " is propagating...\n";
+		
+		// Add this to path in order to avoid infinite loop
 		path.add(this);
+		
+		this.trace = name + " is propagating...\n";
 		trace += sendDataToNeighbors(data, path);
+		
 		return trace;
+	
 	}
 
 	@Override
@@ -103,6 +108,7 @@ public class RMIGraphNodeImpl extends UnicastRemoteObject implements RMIGraphNod
 			final int finalIndice = i;
 			final byte[] finalData = data;
 
+			// If the neighbors have already received the data, ignore it
 			if(path.contains(this.neighbors.get(i))) {
 				continue;
 			} else {
@@ -124,6 +130,7 @@ public class RMIGraphNodeImpl extends UnicastRemoteObject implements RMIGraphNod
 			thread.run();
 		}
 		
+		// If every neighbors have received the data, we end the path
 		if(stop) {
 			this.trace = "Data = " + new String(data) + "\n";
 			return trace;

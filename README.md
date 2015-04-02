@@ -34,6 +34,131 @@ Throw :
 
 #### Code Samples
 
+Propagation du message data à partir d'un noeud. La variable path contient tous les noeuds ayant déjà reçu le message sur le chemin courant pour éviter les boucles infinies. 
+
+```
+@Override
+public String propagate(byte[] data, List<RMIGraphNode> path) throws RemoteException {
+	
+	// Add this to path in order to avoid infinite loop
+	path.add(this);
+	
+	this.trace = name + " is propagating...\n";
+	trace += sendDataToNeighbors(data, path);
+	
+	return trace;
+	
+}
+```
+
+Envoi du message data à tous les voisins d'un noeud. Si un voisin est dans la list path, rien ne lui est envoyé. Si le noeud n'a pas de voisin ou si tous ses voisins on déjà reçu le message, le noeud affiche le message.
+
+```
+@Override
+public String sendDataToNeighbors(byte[] data, final List<RMIGraphNode> path) throws RemoteException {
+
+	boolean stop = true;
+	
+	this.trace = "";
+
+	for(int i = 0; i < this.neighbors.size(); i++) {
+		final int finalIndice = i;
+		final byte[] finalData = data;
+
+		// If the neighbors have already received the data, ignore it
+		if(path.contains(this.neighbors.get(i))) {
+			continue;
+		} else {
+			stop = false;
+		}
+		
+		[...] // Thread
+	
+	}
+	
+	// If every neighbors have received the data, we end the path
+	if(stop) {
+		this.trace = "Data = " + new String(data) + "\n";
+		return trace;
+	}
+
+	return trace;
+}
+```
+
+Thread envoyant le message data au voisin finalIndice d'un noeud.
+
+```
+Thread thread = new Thread() {				
+	public void run() {
+		try {
+			trace += name + " sending to child " + neighbors.get(finalIndice).getName() + "\n";
+			trace += neighbors.get(finalIndice).propagate(finalData, path);
+		} catch (RemoteException e) {
+			System.out.println("Remote exception when sending data to neighbor " + finalIndice + " of " + name);
+		}						
+	}	
+
+};
+
+thread.run();
+```
+
+Client de notre application pour les graphes. Envoi la donnée "42" à un noeud choisi par l'utilisateur et affiche la trace complète.
+
+```
+public class RMIGraphNodeClient {
+
+	public static void main(String[] args) throws RemoteException, MalformedURLException, NotBoundException {
+		RMIGraphNode node;
+		List<RMIGraphNode> path = new ArrayList<RMIGraphNode>();
+		String trace;
+		
+		if(args.length != 1) {
+			System.err.println("Usage error : RMITreeNodeServer rootName");
+			System.exit(1);
+		}
+		
+		node = (RMIGraphNode)Naming.lookup(args [0]);
+		trace = node.propagate("42".getBytes(), path);
+		
+		System.out.println(trace);
+	}
+}
+```
+
+Serveur de notre application pour les graphes. Crée un noeud de graphe avec un nom et des voisins définis par l'utilisateur
+
+```
+public class RMIGraphNodeServer {
+
+	public static void main(String[] args) throws MalformedURLException, RemoteException, NotBoundException {
+
+		RMIGraphNode node;
+
+		if(args.length == 0) {
+			System.err.println("Usage error : RMITreeNodeServer nodeName (neighborsName)*");
+			System.exit(1);
+		}
+		
+		if(args.length == 1) {
+			node = new RMIGraphNodeImpl(args[0], null);
+		} else {
+			node = new RMIGraphNodeImpl(args[0], null);
+			for(int i = 1; i < args.length; i++) {
+				RMIGraphNode neighbor = (RMIGraphNode)Naming.lookup(args[i]);
+				node.addNeighbor(neighbor);
+				neighbor.addNeighbor(node);				
+			}
+		}
+
+		Naming.rebind(args[0], node);
+
+	}
+
+}
+```
+
 #### Utilisation
 
 Script pour générer une structure d'arbre : createTree.sh.
@@ -42,8 +167,11 @@ Script pour générer une structure de graphe : createGraph.sh.
 
 Ces deux scripts sont nécessaire pour que l'application fonctionne, ainsi que les tests. Si ils ne sont pas lancés, il n'y aura pas d'objets RMI existants.
 
-Client pour les arbres : RMITreeNodeClient (rootName)
+Client pour les arbres : RMITreeNodeClient (rootName)  
 Par défaut, propage une donnée à partir de la racine de l'arbre, si précisé, propage une donnée à partir du noeud rootName.
 
-Client pour les graphes : RMIGraphNodeClient rootName
+Client pour les graphes : RMIGraphNodeClient rootName  
 Propage une donnée dans le graphe à partir du noeud rootName.
+
+Test pour les arbres : RMITreeNodeTest.  
+Test pour les graphes : RMIGraphNodeTest.
