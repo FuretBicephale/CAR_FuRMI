@@ -27,6 +27,12 @@ try { ... } catch (RemoteException e) {
 }
 ```
 
+* Catch(RemoteException) dans RMITreeNodeServer.main() et RMIGraphNodeServer.main() qui se déclenche si l'on essaye d'accéder à un registry non existant. Dans ce cas, on le crée.
+```
+try { ... } catch(RemoteException e) {
+	LocateRegistry.createRegistry(1099);			
+}
+```
 
 Throw :
 * RemoteException pour toutes les fonctions de RMITreeNode et RMIGraphNode et les constructeurs de RMITreeNodeImpl et RMIGraphNodeImpl. Ces Throw sont necessaires pour que ces objets soient RMI.
@@ -135,6 +141,12 @@ public class RMIGraphNodeServer {
 	public static void main(String[] args) throws MalformedURLException, RemoteException, NotBoundException {
 
 		RMIGraphNode node;
+
+		try {
+			LocateRegistry.getRegistry(1099);			
+		} catch(RemoteException e) {
+			LocateRegistry.createRegistry(1099);			
+		}
 
 		if(args.length == 0) {
 			System.err.println("Usage error : RMITreeNodeServer nodeName (neighborsName)*");
