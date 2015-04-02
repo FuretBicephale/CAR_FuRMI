@@ -11,7 +11,6 @@ import java.util.List;
 import org.junit.Test;
 
 import rmi.graph.RMIGraphNode;
-import rmi.tree.RMITreeNode;
 
 
 public class RMIGraphNodeTest {
