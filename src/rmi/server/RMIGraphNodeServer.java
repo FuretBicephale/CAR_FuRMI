@@ -4,7 +4,6 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
 
 import rmi.graph.RMIGraphNode;
 import rmi.graph.RMIGraphNodeImpl;
@@ -18,12 +17,6 @@ public class RMIGraphNodeServer {
 	public static void main(String[] args) throws MalformedURLException, RemoteException, NotBoundException {
 
 		RMIGraphNode node;
-		
-		try {
-			LocateRegistry.getRegistry(1099);			
-		} catch(RemoteException e) {
-			LocateRegistry.createRegistry(1099);			
-		}
 
 		if(args.length == 0) {
 			System.err.println("Usage error : RMITreeNodeServer nodeName (neighborsName)*");

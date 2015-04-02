@@ -1,5 +1,13 @@
 #!/bin/sh
 
+cd bin
+rmiregistry &
+sleep 0.1
+
+rmiregistry_pid="$!"
+
+cd ..
+
 xterm -e "java -jar RMIGraphNodeServer.jar node1" &
 sleep 1
 
@@ -17,3 +25,8 @@ sleep 1
 
 xterm -e "java -jar RMIGraphNodeServer.jar node6" &
 sleep 1
+
+echo -n "Press any key to continue... "
+read var_end
+
+kill $rmiregistry_pid
